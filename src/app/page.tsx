@@ -8,8 +8,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Slider } from "@/components/ui/slider"
-import { Switch } from "@/components/ui/switch"
 import { useToast } from "@/hooks/use-toast"
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 import { AlertCircle, BarChart3, BookOpen, Building, DollarSign, PiggyBank, Plus, Target, TrendingUp, User } from "lucide-react"
@@ -20,7 +18,7 @@ export default function AdvancedDashboard() {
   const [incomeType, setIncomeType] = useState('salaried')
   const [income, setIncome] = useState(8500)
   const [expenses, setExpenses] = useState(5200)
-  const [investmentRisk, setInvestmentRisk] = useState(50)
+  // const [investmentRisk, setInvestmentRisk] = useState(50)
   const [initialInvestment, setInitialInvestment] = useState(10000)
   const [monthlyContribution, setMonthlyContribution] = useState(500)
   const [years, setYears] = useState(10)
