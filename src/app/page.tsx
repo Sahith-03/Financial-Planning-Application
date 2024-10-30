@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
-import { AlertCircle, BarChart3, BookOpen, Building, DollarSign, PiggyBank, Plus, Target, TrendingUp, User } from "lucide-react"
+import { BarChart3, BookOpen, Building, Target, TrendingUp, User } from "lucide-react"
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8']
 
@@ -18,7 +18,7 @@ export default function AdvancedDashboard() {
   const [incomeType, setIncomeType] = useState('salaried')
   const [income, setIncome] = useState(8500)
   const [expenses, setExpenses] = useState(5200)
-  // const [investmentRisk, setInvestmentRisk] = useState(50)
+  const [investmentRisk, setInvestmentRisk] = useState(50)
   const [initialInvestment, setInitialInvestment] = useState(10000)
   const [monthlyContribution, setMonthlyContribution] = useState(500)
   const [years, setYears] = useState(10)
