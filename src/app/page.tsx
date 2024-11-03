@@ -18,7 +18,7 @@ export default function AdvancedDashboard() {
   const [incomeType, setIncomeType] = useState('salaried')
   const [income, setIncome] = useState(8500)
   const [expenses, setExpenses] = useState(5200)
-  const [investmentRisk, setInvestmentRisk] = useState(50)
+  // const [investmentRisk, setInvestmentRisk] = useState(50)
   const [initialInvestment, setInitialInvestment] = useState(10000)
   const [monthlyContribution, setMonthlyContribution] = useState(500)
   const [years, setYears] = useState(10)
