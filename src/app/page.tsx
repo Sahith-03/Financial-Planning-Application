@@ -8,21 +8,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+// import { Slider } from "@/components/ui/slider"
+// import { Switch } from "@/components/ui/switch"
 import { useToast } from "@/hooks/use-toast"
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
-import { BarChart3, BookOpen, Building, Target, TrendingUp, User } from "lucide-react"
+import { AlertCircle, BarChart3, BookOpen, Building, DollarSign, PiggyBank, Plus, Target, TrendingUp, User, QrCode, Smartphone } from "lucide-react"
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8']
 
-export default function AdvancedDashboard() {
+export default function AdvancedFinancialPlannerPlus() {
   const [incomeType, setIncomeType] = useState('salaried')
   const [income, setIncome] = useState(8500)
   const [expenses, setExpenses] = useState(5200)
-  // const [investmentRisk, setInvestmentRisk] = useState(50)
+  const [investmentRisk, setInvestmentRisk] = useState(50)
   const [initialInvestment, setInitialInvestment] = useState(10000)
   const [monthlyContribution, setMonthlyContribution] = useState(500)
   const [years, setYears] = useState(10)
   const [expectedReturn, setExpectedReturn] = useState(7)
+  const [upiId, setUpiId] = useState('')
   const { toast } = useToast()
 
   const getFinancialAdvice = () => {
@@ -57,24 +60,70 @@ export default function AdvancedDashboard() {
   })
 
   const expenseData = [
-    { name: 'Housing', value: 1820 },
-    { name: 'Transportation', value: 780 },
-    { name: 'Food', value: 1040 },
-    { name: 'Utilities', value: 520 },
-    { name: 'Entertainment', value: 1040 },
+    { name: 'Housing', value: 1820, category: 'Essential' },
+    { name: 'Transportation', value: 780, category: 'Essential' },
+    { name: 'Food', value: 1040, category: 'Essential' },
+    { name: 'Utilities', value: 520, category: 'Essential' },
+    { name: 'Entertainment', value: 1040, category: 'Discretionary' },
   ]
 
   const handleEnter = () => {
-    // Here you can add logic to process the entered data
     toast({
       title: "Financial Information Updated",
       description: `Income Type: ${incomeType}, Monthly Income: $${income}, Monthly Expenses: $${expenses}`,
     })
   }
 
+  const handleUPIPayment = () => {
+    toast({
+      title: "UPI Payment Initiated",
+      description: `Payment sent to UPI ID: ${upiId}`,
+    })
+  }
+
+  const calculateSavingsPrediction = () => {
+    const totalIncome = income
+    const totalExpenses = expenseData.reduce((sum, expense) => sum + expense.value, 0)
+    const potentialSavings = totalIncome - totalExpenses
+    const savingsRate = (potentialSavings / totalIncome) * 100
+    return { potentialSavings, savingsRate: savingsRate.toFixed(2) }
+  }
+
+  const { potentialSavings, savingsRate } = calculateSavingsPrediction()
+
+  const getInvestmentSuggestions = () => {
+    if (incomeType === 'salaried') {
+      return [
+        { name: "Index Fund", risk: "Low", return: "7-10%", duration: "5+ years" },
+        { name: "401(k)", risk: "Moderate", return: "8-12%", duration: "Until retirement" },
+        { name: "Roth IRA", risk: "Varies", return: "7-10%", duration: "Until retirement" },
+      ]
+    } else if (incomeType === 'business') {
+      return [
+        { name: "SEP IRA", risk: "Moderate", return: "8-12%", duration: "Until retirement" },
+        { name: "Real Estate", risk: "High", return: "8-15%", duration: "5-10+ years" },
+        { name: "Business Reinvestment", risk: "High", return: "Varies", duration: "Ongoing" },
+      ]
+    } else {
+      return [
+        { name: "Dividend Stocks", risk: "Moderate", return: "4-6%", duration: "5+ years" },
+        { name: "REITs", risk: "Moderate", return: "5-10%", duration: "5+ years" },
+        { name: "Corporate Bonds", risk: "Low", return: "3-5%", duration: "1-10 years" },
+      ]
+    }
+  }
+
+  const investmentSuggestions = getInvestmentSuggestions()
+
+  const comparativeInvestmentPlans = [
+    { name: "Conservative", stocks: 40, bonds: 50, cash: 10, expectedReturn: 5 },
+    { name: "Balanced", stocks: 60, bonds: 30, cash: 10, expectedReturn: 7 },
+    { name: "Aggressive", stocks: 80, bonds: 15, cash: 5, expectedReturn: 9 },
+  ]
+
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-3xl font-bold text-gray-800 mb-8">Advanced Financial Planner</h1>
+      <h1 className="text-3xl font-bold text-gray-800 mb-8">Advanced Financial Planner Plus</h1>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
         <Card>
@@ -133,7 +182,7 @@ export default function AdvancedDashboard() {
           <TabsTrigger value="planning">Income Planning</TabsTrigger>
           <TabsTrigger value="expenses">Expense Tracking</TabsTrigger>
           <TabsTrigger value="investments">Investments</TabsTrigger>
-          <TabsTrigger value="business">Business Growth</TabsTrigger>
+          <TabsTrigger value="upi">UPI Payments</TabsTrigger>
         </TabsList>
 
         <TabsContent value="planning">
@@ -169,6 +218,17 @@ export default function AdvancedDashboard() {
               </div>
             </CardContent>
           </Card>
+          <Card className="mt-4">
+            <CardHeader>
+              <CardTitle>Savings Prediction</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>Based on your income and expenses:</p>
+              <p className="font-bold mt-2">Potential Monthly Savings: ${potentialSavings}</p>
+              <p className="font-bold">Savings Rate: {savingsRate}%</p>
+              <Progress value={parseFloat(savingsRate)} className="w-full mt-2" />
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="expenses">
@@ -198,18 +258,15 @@ export default function AdvancedDashboard() {
                 </PieChart>
               </ResponsiveContainer>
               <div className="mt-4">
-                <Label>Budget vs. Actual Spending</Label>
-                <ResponsiveContainer width="100%" height={200}>
-                  <BarChart data={expenseData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="value" name="Actual" fill="#8884d8" />
-                    <Bar dataKey="budget" name="Budget" fill="#82ca9d" />
-                  </BarChart>
-                </ResponsiveContainer>
+                <Label>Expense Categories</Label>
+                <div className="grid grid-cols-2 gap-2 mt-2">
+                  {expenseData.map((expense, index) => (
+                    <div key={index} className="flex justify-between items-center">
+                      <span>{expense.name}</span>
+                      <span className="font-bold">${expense.value}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -218,98 +275,73 @@ export default function AdvancedDashboard() {
         <TabsContent value="investments">
           <Card>
             <CardHeader>
-              <CardTitle>ROI Calculator and Investment Growth Planner</CardTitle>
+              <CardTitle>Investment Suggestions</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-4 mb-4">
-                <div>
-                  <Label>Initial Investment</Label>
-                  <Input
-                    type="number"
-                    value={initialInvestment}
-                    onChange={(e) => setInitialInvestment(Number(e.target.value))}
-                  />
-                </div>
-                <div>
-                  <Label>Monthly Contribution</Label>
-                  <Input
-                    type="number"
-                    value={monthlyContribution}
-                    onChange={(e) => setMonthlyContribution(Number(e.target.value))}
-                  />
-                </div>
-                <div>
-                  <Label>Years</Label>
-                  <Input
-                    type="number"
-                    value={years}
-                    onChange={(e) => setYears(Number(e.target.value))}
-                  />
-                </div>
-                <div>
-                  <Label>Expected Annual Return (%)</Label>
-                  <Input
-                    type="number"
-                    value={expectedReturn}
-                    onChange={(e) => setExpectedReturn(Number(e.target.value))}
-                  />
-                </div>
+              <div className="space-y-4">
+                {investmentSuggestions.map((suggestion, index) => (
+                  <div key={index} className="border p-4 rounded-lg">
+                    <h3 className="font-bold">{suggestion.name}</h3>
+                    <p>Risk: {suggestion.risk}</p>
+                    <p>Expected Return: {suggestion.return}</p>
+                    <p>Recommended Duration: {suggestion.duration}</p>
+                  </div>
+                ))}
               </div>
-              <div className="space-y-2">
-                <p>Future Value: ${futureValue.toLocaleString()}</p>
-                <p>Return on Investment: {roi}%</p>
-              </div>
-              <div className="mt-4">
-                <Label>Wealth Forecast</Label>
-                <ResponsiveContainer width="100%" height={200}>
-                  <LineChart data={wealthForecastData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="year" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="value" stroke="#8884d8" />
-                  </LineChart>
-                </ResponsiveContainer>
+            </CardContent>
+          </Card>
+          <Card className="mt-4">
+            <CardHeader>
+              <CardTitle>Comparative Investment Plans</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {comparativeInvestmentPlans.map((plan, index) => (
+                  <div key={index} className="border p-4 rounded-lg">
+                    <h3 className="font-bold">{plan.name}</h3>
+                    <div className="flex justify-between mt-2">
+                      <div>
+                        <p>Stocks: {plan.stocks}%</p>
+                        <p>Bonds: {plan.bonds}%</p>
+                        <p>Cash: {plan.cash}%</p>
+                      </div>
+                      <div>
+                        <p>Expected Return: {plan.expectedReturn}%</p>
+                      </div>
+                    </div>
+                    <Progress value={plan.stocks} 
+                    className="mt-2" />
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        <TabsContent value="business">
+        <TabsContent value="upi">
           <Card>
             <CardHeader>
-              <CardTitle>Business Growth Planning</CardTitle>
+              <CardTitle>UPI Payments</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <Label>Real Estate Investment Planning</Label>
-                  <div className="grid grid-cols-2 gap-4 mt-2">
-                    <div>
-                      <Input placeholder="Property Value" />
-                    </div>
-                    <div>
-                      <Input placeholder="Expected Rental Income" />
-                    </div>
-                  </div>
+                  <Label htmlFor="upiId">UPI ID</Label>
+                  <Input
+                    id="upiId"
+                    value={upiId}
+                    onChange={(e) => setUpiId(e.target.value)}
+                    placeholder="Enter UPI ID"
+                  />
                 </div>
-                <div>
-                  <Label>Private Ventures</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select growth stage" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="startup">Start-up</SelectItem>
-                      <SelectItem value="scaling">Scaling</SelectItem>
-                      <SelectItem value="expansion">Expansion</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <div className="flex space-x-4">
+                  <Button onClick={handleUPIPayment} className="flex-1">
+                    <Smartphone className="mr-2 h-4 w-4" /> Pay using UPI ID
+                  </Button>
+                  <Button variant="outline" className="flex-1">
+                    <QrCode className="mr-2 h-4 w-4" /> Scan QR Code
+                  </Button>
                 </div>
-                <Button className="w-full">
-                  <Building className="mr-2 h-4 w-4" /> Generate Business Growth Plan
-                </Button>
               </div>
             </CardContent>
           </Card>
